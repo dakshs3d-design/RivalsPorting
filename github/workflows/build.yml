@@ -1,0 +1,28 @@
+name: Build RivalsPorting
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code and submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Publish RivalsPorting
+        run: dotnet publish FortnitePorting/FortnitePorting.csproj -c Release -o ./publish
+
+      - name: Upload compiled build
+        uses: actions/upload-artifact@v4
+        with:
+          name: RivalsPorting-Windows
+          path: publish/
